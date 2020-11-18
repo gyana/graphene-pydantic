@@ -160,6 +160,8 @@ def convert_pydantic_type(
         return graphene_type
     elif field.shape in SHAPE_SEQUENTIAL:
         # TODO: _should_ Sets remain here?
+        if not field.sub_fields[0].allow_none:
+                graphene_type = graphene.NonNull(graphene_type)
         return List(graphene_type)
     elif field.shape in SHAPE_MAPPING:
         raise ConversionError("Don't know how to handle mappings in Graphene.")
